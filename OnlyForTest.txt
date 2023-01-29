@@ -1,0 +1,26 @@
+// 登录
+{"msgid":1,"id":10,"password":"123456"}
+{"msgid":1,"id":11,"password":"123456"}
+
+// 一对一发消息
+{"msgid":5,"id":10,"name":"zhang san","to":11,"msg":"hello!"}
+{"msgid":5,"id":10,"name":"zhang san","to":11,"msg":"hello again!"}
+{"msgid":5,"id":11,"name":"li si","to":10,"msg":"hi!"}
+
+// 添加好友
+{"msgid":6,"id":10,"friendid":11}
+
+// 一对一聊天消息格式
+msgid
+id:1
+name:"zhangsan"
+to:3
+msg:"xxxx"
+
+{"error":0,"id":11,"msgid":2,"name":"li si",
+"offlinemsg":["{\"id\":10,\"msg\":\"hello!\",\"msgid\":5,\"name\":\"zhang san\",\"to\":11}"
+,"{\"id\":10,\"msg\":\"hello!\",\"msgid\":5,\"name\":\"zhang san\",\"to\":11}"
+,"{\"id\":10,\"msg\":\"hello again!\",\"msgid\":5,\"name\":\"zhang san\",\"to\":11}"]}
+
+//Friend 和 User 联合查询
+select a.id,a.name,a.state from User a inner join Friend b on b.friend = a.id where b.userid = %d
