@@ -18,4 +18,7 @@ enum EnMsgType {
     GROUP_CHAT_MSG,     // 群聊天
 };
 
+#define LOG(str) \
+	cout << __FILE__ << ":" << __LINE__ << " " << \
+	__TIMESTAMP__ << " : " << str << endl; 
 #endif

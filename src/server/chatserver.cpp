@@ -21,7 +21,7 @@ ChatServer::ChatServer(EventLoop* loop,
     _server.setMessageCallback(std::bind(&ChatServer::onMessage, this, _1, _2, _3));
     
     //设置线程数量
-    _server.setThreadNum(4);
+    _server.setThreadNum(6);
 }
 
 //启动服务
@@ -55,5 +55,5 @@ void ChatServer::onMessage(const TcpConnectionPtr& conn,
     // 通过js["msgid"] 获取一个业务处理器handler 
     auto msgHandler = ChatService::instance()->getHandler(js["msgid"].get<int>()); //json类型转成int
     // 回调消息绑定好的事件处理器, 来执行相应的业务
-    msgHandler(conn, js, time);
+    msgHandler(conn, js, time);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 }

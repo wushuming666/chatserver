@@ -1,5 +1,5 @@
 # chatserver
-可以工作在nginx tcp负载均衡环境中的集群聊天服务器和客户端源码 基于muduo实现
+可以工作在nginx tcp负载均衡环境中的集群聊天服务器和客户端源码 基于muduo实现，数据库采用手写线程池连接。
 
 ## 编译方式
 1. cd build
@@ -207,79 +207,9 @@ target_link_libraries(ChatServer muduo_net muduo_base mysqlclient hiredis pthrea
 # 5、MySQL
 MySQL 模块只用关心调用数据库的 API 实现。
 
-有以下几个操作：初始化数据库连接、释放数据库连接资源、连接数据库、更新操作、查询操作、获取连接。
+这里我用的是 [数据库连接池](https://github.com/wushuming666/ConnectionPool) 实现数据库的连接
 
-直接贴代码
-
-```cpp
-#include "db.h"
-#include <muduo/base/Logging.h>
-
-static string server = "127.0.0.1";
-static string user = "root";
-static string password = "123456";
-static string dbname = "chat";
-
-//初始化数据库连接
-MySQL::MySQL()
-{
-    _conn = mysql_init(nullptr);
-}
-
-//释放数据库连接资源
-MySQL::~MySQL()
-{
-    if (_conn != nullptr) 
-        mysql_close(_conn);
-}
-
-//连接数据库
-bool MySQL::connect()
-{
-    MYSQL *p = mysql_real_connect(_conn, server.c_str(), user.c_str(),
-                            password.c_str(), dbname.c_str(), 3306, nullptr, 0);
-    if(p != nullptr)
-    {
-        mysql_query(_conn, "set name gbk");
-        LOG_INFO << "connect mysql success!";
-    }
-    else
-    {
-        LOG_INFO << "connect mysql fail!";
-    }
-    return p;
-}
-
-// 更新操作
-bool MySQL::update(string sql)
-{
-    if (mysql_query(_conn, sql.c_str()))
-    {
-        LOG_INFO << __FILE__ << ":" << __LINE__ << ":"
-            << sql << "更新失败!";
-        return false;
-    }
-    return true;
-}
-
-// 查询操作
-MYSQL_RES* MySQL::query(string sql)
-{
-    if(mysql_query(_conn, sql.c_str()))
-    {
-        LOG_INFO << __FILE__ << ":" << __LINE__ << ":"
-                << sql << "查询失败!";
-        return nullptr;
-    }
-    return mysql_use_result(_conn);
-}
-
-// 获取连接
-MYSQL* MySQL::getConnection()
-{
-    return _conn;
-}
-```
+可以点击上面的链接查看详细介绍。
 
 # 6、网络模块
 `chatserver.hpp` 和 `chatserver.cpp`。和`testmuduo`的代码几乎一样，主要处理连接事件和读写事件的成功接收发送。

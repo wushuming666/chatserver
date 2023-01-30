@@ -1,5 +1,6 @@
 #include "db.h"
 #include <muduo/base/Logging.h>
+#include <iostream>
 
 static string server = "127.0.0.1";
 static string user = "root";
@@ -28,6 +29,9 @@ bool MySQL::connect()
     {
         mysql_query(_conn, "set name gbk");
         LOG_INFO << "connect mysql success!";
+        
+        MYSQL_RES *pstRes = mysql_store_result(_conn);
+        mysql_free_result(pstRes);   
     }
     else
     {
@@ -45,6 +49,9 @@ bool MySQL::update(string sql)
             << sql << "更新失败!";
         return false;
     }
+    MYSQL_RES *pstRes = mysql_store_result(_conn);
+    mysql_free_result(pstRes);   
+    // mysql_use_result(_conn);
     return true;
 }
 
@@ -55,6 +62,8 @@ MYSQL_RES* MySQL::query(string sql)
     {
         LOG_INFO << __FILE__ << ":" << __LINE__ << ":"
                 << sql << "查询失败!";
+        //Commands out of sync; you can't run this command now
+        std::cout << mysql_error(_conn) << std::endl;
         return nullptr;
     }
     return mysql_use_result(_conn);

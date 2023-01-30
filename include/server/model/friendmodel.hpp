@@ -2,6 +2,7 @@
 #define FRIENDMODEL_H
 
 #include "user.hpp"
+#include "connectionpool.hpp"
 #include <vector>
 
 using namespace std;

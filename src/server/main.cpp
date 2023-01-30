@@ -19,6 +19,8 @@ int main(int argc, char **argv)
         exit(-1);
     }
 
+    ConnectionPool* cp = ConnectionPool::getConnectionPool();
+
     // 解析通过命令行参数传递的ip和port
     char *ip = argv[1];
     uint16_t port = atoi(argv[2]);
