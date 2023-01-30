@@ -9,6 +9,8 @@
 
 也可以装cmake tools 一键编译
 
+![demo](https://img-blog.csdnimg.cn/9b2f8a8990c14ffeb17e6e078d72453d.png)
+
 # 1、项目需求
 1. 客户端新用户注册
 2. 客户端用户登录
